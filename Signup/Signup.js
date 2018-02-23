@@ -3,26 +3,48 @@ import '../App.css';
 import { Grid, Row, Col, PageHeader, Button} from 'react-bootstrap';
 import { Redirect } from 'react-router-dom'
 
+var Parse = require('parse');
+
 class Signup extends Component{
   constructor(props){
     super(props);
     this.state = {name: '',
                   password: '',
                   email: '',
-                  isLoggedIn: ''};
+                  loggedIn: ''};
 
     this.handleNameChange = this.handleNameChange.bind(this);
     this.handlePasswordChange = this.handlePasswordChange.bind(this);
     this.handleEmailChange = this.handleEmailChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
+
   handleNameChange(event){
     this.setState({name:event.target.value});
   }
+
   handlePasswordChange(event){
     this.setState({password:event.target.value});
   }
+
   handleEmailChange(event){
     this.setState({email:event.target.value});
+  }
+
+  handleSubmit(event){
+    var Query = Parse.Object.extend(Parse.User);
+    var qry = new Query();
+
+    qry.set("username",this.state.name);
+    qry.set("password",this.state.password);
+    qry.set("email",this.state.email);
+
+    qry.save().then(function(){
+      console.log("Signup Success");
+    }).catch(function(e){
+      console.log("Signup Failed");
+    })
+    this.setState({name: '',password: '', email: ''});
   }
 
   render(){
@@ -57,7 +79,7 @@ class Signup extends Component{
           </Row>
           <Row>
             <Col md={10}>
-              <Button bsSize="large" block>SUBMIT</Button>
+              <Button onClick={this.handleSubmit} bsSize="large" block>SUBMIT</Button>
             </Col>
           </Row>
         </Grid>

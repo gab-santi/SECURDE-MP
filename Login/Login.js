@@ -3,23 +3,47 @@ import '../App.css';
 import { Grid, Row, Col, PageHeader, Button} from 'react-bootstrap';
 import { Redirect } from 'react-router-dom'
 
+var Parse = require('parse');
+
 class Login extends Component{
   constructor(props){
     super(props);
     this.state = {name: '',
                   password: '',
-                  isLoggedIn: ''};
+                  loggedIn: ''};
 
     this.handleNameChange = this.handleNameChange.bind(this);
     this.handlePasswordChange = this.handlePasswordChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
+
   handleNameChange(event){
     this.setState({name:event.target.value});
   }
+
   handlePasswordChange(event){
     this.setState({password:event.target.value});
   }
+
+  handleSubmit(event){
+    var Query = Parse.Object.extend(Parse.User);
+    var qry = new Query();
+
+    Parse.User.logIn(this.state.name,this.state.password).then(() => {
+      console.log("Login Success");
+      this.setState({loggedIn: true});
+    }).catch(function(e){
+      console.log("Login Failed");
+    })
+    this.setState({name: '',password: ''});
+  }
+
   render(){
+    if(this.state.loggedIn){
+      return(
+        <Redirect to="/"/>
+      )
+    }
     var inputBoxStyle = {border: '1px solid #e6e6e6', borderRadius: '2px', padding: '5px', color: '#555555', width: '50%'};
     var rowStyle = {margin: '10px'};
     var wellStyles = { maxWidth: 400, margin: '0 auto 10px' };
@@ -45,7 +69,7 @@ class Login extends Component{
           </Row>
           <Row>
             <Col md={10}>
-              <Button bsSize="large" block>SUBMIT</Button>
+              <Button onClick={this.handleSubmit} bsSize="large" block>SUBMIT</Button>
             </Col>
           </Row>
         </Grid>

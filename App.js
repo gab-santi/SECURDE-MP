@@ -7,6 +7,12 @@ import Navbar from './Navbar/Navbar.js';
 import Login from './Login/Login.js';
 import Signup from './Signup/Signup.js';
 import Shop from './Shop/Shop.js';
+import Cart from './Cart/Cart.js';
+
+var Parse = require('parse');
+Parse.initialize("securdemp");
+Parse.serverURL = 'https://marsh-month.glitch.me/parse'
+
 class App extends Component {
   render() {
     return (
@@ -15,9 +21,18 @@ class App extends Component {
         <div style={{"margin-top":"10%"}}></div>
         <Switch>
           <Route exact path="/" component={Home}/>
-          <Route path="/login" component={Login}/>
-          <Route path="/signup" component={Signup}/>
           <Route path="/shop" component={Shop}/>
+          { Parse.User.current() == null
+            ?
+            <div>
+              <Route path="/login" component={Login}/>
+              <Route path="/signup" component={Signup}/>
+              <Route path="/cart" component={Cart}/>
+            </div>
+            :
+            <div>
+            </div>
+          }
         </Switch>
       </div>
     );
