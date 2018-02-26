@@ -21,7 +21,9 @@ class Shop extends Component{
                   //products
                   allProducts: [], displayProducts: [],
                   //pagination
-                  activePage:1, productCount: 0}
+                  activePage:1, productCount: 0,
+                  //search
+                  searchInput: '', searchempty: false}
 
     this.handleSort1Change = this.handleSort1Change.bind(this);
     this.handleSort2Change = this.handleSort2Change.bind(this);
@@ -31,6 +33,8 @@ class Shop extends Component{
     this.changeCategory = this.changeCategory.bind(this);
     this.handleCategoryFilter = this.handleCategoryFilter.bind(this);
     this.handleCategoryFilterDisplay = this.handleCategoryFilterDisplay.bind(this);
+    this.searchProducts = this.searchProducts.bind(this);
+    this.handleSearchChange = this.handleSearchChange.bind(this);
   }
   componentDidMount(){
     this.setState({sort1Options:[{label:"Default Sorting", value:1}, {label:"Popularity", value:2},
@@ -106,6 +110,26 @@ class Shop extends Component{
       this.setState({displayProducts: list});
     })
   }
+  searchProducts(){
+    var Query = new Parse.Query("Product");
+    Query.matches("name",this.state.searchInput);
+    if(this.state.searchInput == '' || this.state.searchInput == null){
+      this.setState({displayProducts: [], allProducts: [], productCount: 0, searchempty: true});
+    }
+    else {
+      Query.find().then((list) => {
+        if(list.length == 0){
+          this.setState({displayProducts: [], allProducts: [], productCount: 0, searchempty: true});
+        }
+        else{
+          this.setState({displayProducts: list, allProducts: list, productCount: list.length});
+        }
+      })
+    }
+  }
+  handleSearchChange(event){
+    this.setState({searchInput: event.target.value});
+  }
   render(){
     var sortOptions = [{label:"Default Sorting", value:"1"}, {label:"Popularity", value:"2"},
       {label:"Price: low to high", value:"3"}, {label:"Price: high to low", value:"4"}];
@@ -142,9 +166,8 @@ class Shop extends Component{
                 </li>
               </ul>
               <div class="search-product pos-relative bo4 of-hidden">
-  							<input class="s-text7 size6 p-l-23 p-r-50" name="search-product" placeholder="Search Products..." type="text"/>
-
-  							<button class="flex-c-m size5 ab-r-m color2 color0-hov trans-0-4">
+  							<input class="s-text7 size6 p-l-23 p-r-50" name="search-product" placeholder="Search Products..." type="text" value={this.state.searchInput} onChange={this.handleSearchChange}/>
+  							<button class="flex-c-m size5 ab-r-m color2 color0-hov trans-0-4" onClick={() => {this.searchProducts()}}>
   								<i class="fs-12 fa fa-search" aria-hidden="true"></i>
   							</button>
 						  </div>
@@ -166,14 +189,19 @@ class Shop extends Component{
               </div>
               <Pagination activePage={this.state.activePage} itemsCountPerPage={12} totalItemsCount={this.state.productCount} onChange={this.handlePageChange}/>
               <div style={{"width":"100%"}}>
-              {this.state.displayProducts.map((item) => {
+              { this.state.displayProducts.map((item) => {
                 console.log("Item: ", item);
                 return(
                   <Item key={item.id} item={item} style={{"display":"inline","width":"30%"}}/>
                 )
               })
-
               }
+              { this.state.searchempty ?
+                <span>
+                  Sorry we could not find your search in our stock...
+                </span>
+                 : null }
+
               </div>
               <Pagination activePage={this.state.activePage} itemsCountPerPage={12} totalItemsCount={this.state.productCount} onChange={this.handlePageChange}/>
             </Col>

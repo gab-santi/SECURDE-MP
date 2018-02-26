@@ -8,6 +8,7 @@ import Login from './Login/Login.js';
 import Signup from './Signup/Signup.js';
 import Shop from './Shop/Shop.js';
 import Cart from './Cart/Cart.js';
+import Product from './Product/Product.js';
 
 var Parse = require('parse');
 Parse.initialize("securdemp");
@@ -23,6 +24,7 @@ class App extends Component {
           <Route exact path="/" component={Home}/>
           <Route path="/shop" component={Shop}/>
           <Route path="/cart" component={Cart}/>
+          <Route path="/product" component={Product}/>
           { Parse.User.current() == null
             ?
             <div>
