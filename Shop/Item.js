@@ -62,9 +62,9 @@ class Item extends Component {
   }
   render(){
     return(
-      <span style={{"display":"inline", "width":"30%"}}>
-        <img src={this.props.item.get('image').url()} style={{"display":"inline-block","width":"20%"}}/>
-        <div>
+      <span style={{"display":"inline-block", "width":"33%"}}>
+        <img src={this.props.item.get('image').url()} style={{"width":"100%"}}/>
+        <div style={{"margin":"7.5px"}}>
           <a class="block2-name dis-block s-text3 p-b-5" href="#">{this.props.item.get('name')}</a>
           <span>${this.props.item.get('price')}</span>
         </div>
