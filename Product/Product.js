@@ -9,6 +9,9 @@ import Select from 'react-select';
 import 'react-select/dist/react-select.css';
 
 var Parse = require('parse');
+Parse.initialize("securdemp");
+
+console.log("Session: " + Parse.Session.current());
 
 class Product extends Component{
   constructor(props){
@@ -42,6 +45,10 @@ class Product extends Component{
     var change = this.state.quantity+change;
     this.setState({quantity: change});
   }
+  addToCart(){
+    var item = this.getItem();
+    console.log(item);
+  }
   render(){
     return(
       <div>
@@ -73,7 +80,7 @@ class Product extends Component{
     							</div>
 
     							<div class="btn-addcart-product-detail size9 trans-0-4 m-t-10 m-b-10">
-    								<button class="flex-c-m sizefull bg1 bo-rad-23 hov1 s-text1 trans-0-4">
+    								<button class="flex-c-m sizefull bg1 bo-rad-23 hov1 s-text1 trans-0-4" onClick={() => {this.addToCart()}}>
     									Add to Cart
     								</button>
     							</div>

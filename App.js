@@ -14,6 +14,8 @@ var Parse = require('parse');
 Parse.initialize("securdemp");
 Parse.serverURL = 'https://marsh-month.glitch.me/parse'
 
+console.log(Parse.User.current());
+
 class App extends Component {
   render() {
     return (
