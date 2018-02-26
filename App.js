@@ -22,12 +22,12 @@ class App extends Component {
         <Switch>
           <Route exact path="/" component={Home}/>
           <Route path="/shop" component={Shop}/>
+          <Route path="/cart" component={Cart}/>
           { Parse.User.current() == null
             ?
             <div>
               <Route path="/login" component={Login}/>
               <Route path="/signup" component={Signup}/>
-              <Route path="/cart" component={Cart}/>
             </div>
             :
             <div>
