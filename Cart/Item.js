@@ -20,8 +20,10 @@ class Item extends Component {
 
 	}
 	quantityChange(change){
-    	var change = this.state.quantity+change;
-    	this.setState({quantity: change});
+    	var change2 = this.state.quantity+change;
+    	this.setState({quantity: change2});
+			this.props.totalChange(change*this.props.item.product.price);
+			this.props.changeQuantity(this,change);
   	}
   	deleteItem() {
   		this.props.func(this.props.item);
