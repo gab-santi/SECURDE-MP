@@ -25,7 +25,6 @@ class Cart extends Component{
   
   componentDidMount(){
 	  this.getItems();
-	  this.purchaseItems();
   }
   
   getItems(){
@@ -58,10 +57,12 @@ class Cart extends Component{
 	  		
 	  for(var i = 0; i < items.length; i++){
 			this.savePurchase(i);
+
 	  }
 
 	  this.setState({items: []});
 	  localStorage.setItem('cart', JSON.stringify([]));
+	  alert("Purchase successful!");
   }
   
   savePurchase(i){
@@ -69,6 +70,8 @@ class Cart extends Component{
 	  var items = this.state.items;
 	  
 	  var query = new Parse.Query('Product');
+
+	  alert("saving..");
 	  
 	  query.equalTo('id', items[index].product.id)
 				.find({
@@ -176,8 +179,8 @@ class Cart extends Component{
 
 				<div class="size15 trans-0-4">
 
-					<button class="flex-c-m sizefull bg1 bo-rad-23 hov1 s-text1 trans-0-4">
-						Proceed to Checkout
+					<button class="flex-c-m sizefull bg1 bo-rad-23 hov1 s-text1 trans-0-4" onClick={() => {this.purchaseItems()}}>
+						Checkout
 					</button>
 				</div>
 			</div>
