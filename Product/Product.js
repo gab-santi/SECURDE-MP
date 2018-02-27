@@ -62,7 +62,7 @@ class Product extends Component{
 			cart.push(JSON.stringify(item));
 			localStorage.setItem('cart',JSON.stringify(cart));
 
-		  alert(item.product.name + " added to Cart.");
+		  alert({name: this.state.product[0].get('name')}.name + " (Qty: " + this.state.quantity + ") added to Cart.");
 	  }
 	  catch(err){
 		  console.log(err);

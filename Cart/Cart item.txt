@@ -11,7 +11,8 @@
 							<th class="column-4 p-l-70">Quantity</th>
 							<th class="column-5">Total</th>
 						</tr>
-
+						
+						// render
 						<tr class="table-row">
 							<td class="column-1">
 								<div class="cart-img-product b-rad-4 o-f-hidden">
