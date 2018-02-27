@@ -37,16 +37,16 @@ class Product extends Component{
       this.setState({product: item}, () => {
         console.log(this.state.product);
         this.setState({name: this.state.product[0].get('name'), description: this.state.product[0].get(),
-        url: this.state.product[0].get('image').url(), price: this.state.product[0].get('price')});
+        url: this.state.product[0].get('image').url(), price: this.state.product[0].get('price'), description: this.state.product[0].get('description')});
       });
     })
   }
-  
+
   quantityChange(change){
     var change = this.state.quantity+change;
     this.setState({quantity: change});
   }
-  
+
   addToCart(){
   if (Parse.User.current() == null) {
       alert("Please Log In to continue.");
@@ -54,16 +54,16 @@ class Product extends Component{
       var item = new Object();
     	item.product= this.state.product[0];
     	item.quantity = this.state.quantity;
-    	
+
     	var cart = [];
     	cart = JSON.parse(localStorage.getItem('cart'))
     	cart.push(JSON.stringify(item));
-    	localStorage.setItem('cart',JSON.stringify(cart)); 
+    	localStorage.setItem('cart',JSON.stringify(cart));
 
       alert(item.product.name + " added to Cart.");
     }
   }
-  
+
   render(){
     return(
       <div>

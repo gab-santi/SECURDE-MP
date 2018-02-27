@@ -9,10 +9,13 @@ import Signup from './Signup/Signup.js';
 import Shop from './Shop/Shop.js';
 import Cart from './Cart/Cart.js';
 import Product from './Product/Product.js';
+import Accounts from './Accounts/Accounts.js';
+import Products from './Products/Products.js';
 
 var Parse = require('parse');
-Parse.initialize("securdemp");
+Parse.initialize("securdemp",);
 Parse.serverURL = 'https://marsh-month.glitch.me/parse'
+Parse.masterKey = 'securdemp1234';
 
 console.log(Parse.User.current());
 
@@ -27,6 +30,8 @@ class App extends Component {
           <Route path="/shop" component={Shop}/>
           <Route path="/cart" component={Cart}/>
           <Route path="/product" component={Product}/>
+          <Route path="/accounts" component={Accounts}/>
+          <Route path="/products" component={Products}/>
           { Parse.User.current() == null
             ?
             <div>
