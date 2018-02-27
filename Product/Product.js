@@ -51,16 +51,22 @@ class Product extends Component{
   if (Parse.User.current() == null) {
       alert("Please Log In to continue.");
   } else {
-      var item = new Object();
-    	item.product= this.state.product[0];
-    	item.quantity = this.state.quantity;
+	  try{
+		  var item = new Object();
+			item.product= this.state.product[0];
+			item.quantity = this.state.quantity;
+			
 
-    	var cart = [];
-    	cart = JSON.parse(localStorage.getItem('cart'))
-    	cart.push(JSON.stringify(item));
-    	localStorage.setItem('cart',JSON.stringify(cart));
+			var cart = [];
+			cart = JSON.parse(localStorage.getItem('cart'))
+			cart.push(JSON.stringify(item));
+			localStorage.setItem('cart',JSON.stringify(cart));
 
-      alert(item.product.name + " added to Cart.");
+		  alert(item.product.name + " added to Cart.");
+	  }
+	  catch(err){
+		  console.log(err);
+	  }
     }
   }
 

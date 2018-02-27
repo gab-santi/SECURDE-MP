@@ -28,41 +28,51 @@ class Cart extends Component{
   }
   
   getItems(){
-	  var cart = [];
-	  cart = JSON.parse(localStorage.getItem('cart'));
-	  
-	  this.setState({items: []});
-	  for(var i = 0; i < cart.length; i++){
-		var item = JSON.parse(cart[i].replace('/',''));
-		var currentItems = this.state.items;
-		this.setState({items: currentItems.push(item)});
+	  try{
+		  var cart = [];
+		  cart = JSON.parse(localStorage.getItem('cart'));
+		  
+		  this.setState({items: []});
+		  for(var i = 0; i < cart.length; i++){
+			var item = JSON.parse(cart[i].replace('/',''));
+			var currentItems = this.state.items;
+			currentItems.push(item);
+			this.setState({items: currentItems});
+		  }
 	  }
-
-	  console.log(this.state.items);
+	  catch(err){
+		  console.log(err);
+	  }
   }
   
   deleteItem(item){
-	  var currentItems = this.state.items;
-	  var index = currentItems.indexOf(item);
-	  this.setState({items: currentItems.splice(index,1)});
-	  
-	  var cart = [];
-	  cart = JSON.parse(localStorage.getItem('cart'));
-	  cart.splice(index, 1);
-	  localStorage.setItem('cart',JSON.stringify(cart)); 
+	  try{
+		  var currentItems = this.state.items;
+		  var index = currentItems.indexOf(item);
+		  this.setState({items: currentItems.splice(index,1)});
+		  
+		  var cart = [];
+		  cart = JSON.parse(localStorage.getItem('cart'));
+		  cart.splice(index, 1);
+		  localStorage.setItem('cart',JSON.stringify(cart)); 
+	  }
+	  catch(err){
+		  console.log(err);
+	  }
   }
   
   purchaseItems(){
-	  var items = this.state.items;
-	  		
-	  for(var i = 0; i < items.length; i++){
-			this.savePurchase(i);
-
+	  try{
+		  var items = this.state.items;
+		  for(var i = 0; i < items.length; i++){
+				this.savePurchase(i);
+		  }
+		  
+		  alert("Purchase successful!");
 	  }
-
-	  this.setState({items: []});
-	  localStorage.setItem('cart', JSON.stringify([]));
-	  alert("Purchase successful!");
+	  catch(err){
+		  console.log(err);
+	  }
   }
   
   savePurchase(i){
@@ -70,12 +80,10 @@ class Cart extends Component{
 	  var items = this.state.items;
 	  
 	  var query = new Parse.Query('Product');
-
-	  alert("saving..");
 	  
 	  query.equalTo('id', items[index].product.id)
 				.find({
-					success: function(results,i){
+					success: (results) => {
 						var Query = Parse.Object.extend('Purchase');
 						var p = new Query();
 						
@@ -84,11 +92,12 @@ class Cart extends Component{
 						p.set('user', Parse.User.current());
 						p.set('quantity', items[index].quantity);
 						
-						p.save().then(function(){
-						  console.log("done!");
-						}).catch(function(e){
-						  console.log("e");
+						p.save().then( () =>{
+							this.deleteItem(items[index]);
+						}).catch(e => {
+						  console.log(e);
 						});
+						
 					},
 					error: function(error){
 						console.log(error);
@@ -110,8 +119,9 @@ class Cart extends Component{
     
     <div>
     	<div style={{"width":"100%"}}>
-		{ Object.keys(this.state.items).map(function(item) {
-			console.log("hello");
+		{ 
+		
+		this.state.items.map((item) => {
 			return(
 				<p>{item.product.name}</p>	
 			);
