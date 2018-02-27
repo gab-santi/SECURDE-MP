@@ -49,7 +49,7 @@ class Navbar extends Component {
 
       					<li>
                 <a href="#">
-                  <Link to="/Cart" style={LinkStyle}>Cart</Link>
+                    <Link to="/Cart" style={LinkStyle}>Cart</Link>
                 </a>
       					</li>
 
@@ -60,6 +60,19 @@ class Navbar extends Component {
       					<li>
       						<a href="contact.html">Contact</a>
       					</li>
+        
+                { Parse.User.current() != null ? (
+                Parse.User.current().get('admin') == true ?
+                        <li>
+                            <a href="#">
+                                <Link to="/Track" style={LinkStyle}>Track</Link>
+                            </a>
+      					</li>
+                        : ""
+                    )
+                    : ""
+                }
+                        
       				</ul>
       			</nav>
       		</div>

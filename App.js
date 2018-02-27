@@ -11,6 +11,7 @@ import Cart from './Cart/Cart.js';
 import Product from './Product/Product.js';
 import Accounts from './Accounts/Accounts.js';
 import Products from './Products/Products.js';
+import Track from './Track/Track.js';
 
 var Parse = require('parse');
 Parse.initialize("securdemp",);
@@ -32,6 +33,14 @@ class App extends Component {
           <Route path="/product" component={Product}/>
           <Route path="/accounts" component={Accounts}/>
           <Route path="/products" component={Products}/>
+          { Parse.User.current() != null ? (
+                Parse.User.current().get('admin') == true ?
+                    <Route path="/track" component={Track}/>
+                    : ""
+                )
+                : ""
+          }
+          <Route path="/track" component={Track}/>
           { Parse.User.current() == null
             ?
             <div>
