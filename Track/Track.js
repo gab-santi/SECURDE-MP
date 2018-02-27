@@ -77,7 +77,7 @@ class Track extends Component{
     var iconStyle = {margin:"5px", color:"black"}
     return(
       <div style={{"margin":"0px auto","width":"90%"}}>
-        <Pagination activePage={this.state.activePage} itemsCountPerPage={10} totalItemsCount={this.state.productCount} onChange={this.handlePageChange}/>
+        <Pagination activePage={this.state.activePage} itemsCountPerPage={10} totalItemsCount={this.state.purchaseCount} onChange={this.handlePageChange}/>
         <Table striped bordered condensed hover>
           <thead>
             <tr>
@@ -112,7 +112,7 @@ class Track extends Component{
                     ? <td> --- </td>
                     : <td> { item.get('quantity') * item.get('product').get('price') } </td> }
                   <td>
-                    <a href="#" onClick={() => this.setItem("cancelPurchase",item)}><i class="fas fa-eye f2ed" style={iconStyle}></i></a>
+                    <a href="#" onClick={() => this.setItem("cancelPurchase",item)}><i class="fas fa-trash-alt" style={iconStyle}></i></a>
                   </td>
                 </tr>
               )
@@ -120,7 +120,7 @@ class Track extends Component{
             }
           </tbody>
         </Table>
-        <Pagination activePage={this.state.activePage} itemsCountPerPage={10} totalItemsCount={this.state.productCount} onChange={this.handlePageChange}/>
+        <Pagination activePage={this.state.activePage} itemsCountPerPage={12} totalItemsCount={this.state.purchaseCount} onChange={this.handlePageChange}/>
         <ModalView modalType={this.state.modalType} refresh={this.refreshList} close={this.closeModal}  product={this.state.product} show={this.state.showModal}/>
 
       </div>
