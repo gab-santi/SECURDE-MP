@@ -66,49 +66,55 @@ class Home extends Component {
   render(){
     return(
       <div>
-        <PageHeader>
-          Our Products
-          <div class="wrap_menu">
-            <nav class="menu">
-            <ul class="main_menu">
-              <li class="p-t-4">
-                { this.state.category == "all"
-                  ? <a class="s-text13 active1" href="#" onClick={() => {this.changeCategory("all")}}>All</a>
-                  : <a class="s-text13" href="#" onClick={() => {this.changeCategory("all")}}>All</a>
-                }
-              </li>
-              <li class="p-t-4">
-                { this.state.category == "guitar"
-                  ? <a class="s-text13 active1" href="#" onClick={() => {this.changeCategory("guitar")}}>Guitars</a>
-                  : <a class="s-text13" href="#" onClick={() => {this.changeCategory("guitar")}}>Guitars</a>
-                }
-              </li>
-              <li class="p-t-4">
-              { this.state.category == "piano"
-                ? <a class="s-text13 active1" href="#" onClick={() => {this.changeCategory("piano")}}>Pianos</a>
-                : <a class="s-text13" href="#" onClick={() => {this.changeCategory("piano")}}>Pianos</a>
-              }
-              </li>
-              <li class="p-t-4">
-              { this.state.category == "ukulele"
-                ? <a class="s-text13 active1" href="#" onClick={() => {this.changeCategory("ukulele")}}>Ukuleles</a>
-                : <a class="s-text13" href="#" onClick={() => {this.changeCategory("ukulele")}}>Ukuleles</a>
-              }
-              </li>
-            </ul>
-            </nav>
-          </div>
-        </PageHeader>
-        <div style={{"margin":"0px auto","width":"80%"}}>
-        { this.state.displayProducts.map((item) => {
-          console.log("Item: ", item);
-          return(
-            <Item key={item.id} item={item} style={{"display":"inline","width":"10%"}}/>
-          )
-        })
+        { Parse.User.current() != null ? (
+                <PageHeader>Welcome Back, {Parse.User.current().get('username')}!</PageHeader>
+            ) : ( <PageHeader>Welcome to Stringify!</PageHeader> )
         }
+        <PageHeader>Browse Our Products:</PageHeader>
+        <div class="categories">
+            <a class="category" href="#" onClick={() => {this.changeCategory("guitar")}}>
+                <span style={{"display":"inline-block", "width":"30%", "margin":"0px auto"}}>
+                    <img src={require('../images/guitar.png')}/>
+                    <div style={{"margin":"7.5px"}}>
+                        <span class="s-text13">Guitars</span>
+                    </div>
+                </span>
+            </a>
+            <a class="category" href="#" onClick={() => {this.changeCategory("piano")}}>
+                <span style={{"display":"inline-block", "width":"30%", "margin":"0px auto"}}>
+                    <img src={require('../images/piano.png')}/>
+                    <div style={{"margin":"7.5px"}}>
+                        <span class="s-text13">Pianos</span>
+                    </div>
+                </span>
+            </a>
+            <a class="category" href="#" onClick={() => {this.changeCategory("ukulele")}}>
+                <span style={{"display":"inline-block", "width":"30%", "margin":"0px auto"}}>
+                    <img src={require('../images/ukulele.png')}/>
+                    <div style={{"margin":"7.5px"}}>
+                        <span class="s-text13">Ukuleles</span>
+                    </div>
+                </span>
+            </a>
         </div>
-      </div>
+        <PageHeader>
+            { this.state.category == "all"
+                ? <a class="s-text13 active1" href="#" onClick={() => {this.changeCategory("all")}}>All</a>
+                : <a class="s-text13" href="#" onClick={() => {this.changeCategory("all")}}>All</a>
+            }
+    </PageHeader>
+    <div class="categories">
+        <div style={{"margin":"0px auto","width":"80%"}}>
+            { this.state.displayProducts.map((item) => {
+                console.log("Item: ", item);
+                return(
+                    <Item key={item.id} item={item} style={{"display":"inline","width":"10%"}}/>
+                )
+              })
+            }
+        </div>
+    </div>
+    </div>
     )
   }
 }
