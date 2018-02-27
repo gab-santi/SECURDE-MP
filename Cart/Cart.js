@@ -8,6 +8,8 @@ import { Redirect } from 'react-router-dom';
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
 
+var Parse = require('parse');
+
 class Cart extends Component{
   constructor(props){
     super(props);
@@ -17,10 +19,13 @@ class Cart extends Component{
 	this.deleteItem = this.deleteItem.bind(this);
 	this.updateTotals = this.updateTotals.bind(this);
 	this.updateCart = this.updateTotals.bind(this);
+	this.purchaseItems = this.purchaseItems.bind(this);
+	this.savePurchase = this.savePurchase.bind(this);
   }
   
   componentDidMount(){
 	  this.getItems();
+	  this.purchaseItems();
   }
   
   getItems(){
@@ -48,6 +53,47 @@ class Cart extends Component{
 	  localStorage.setItem('cart',JSON.stringify(cart)); 
   }
   
+  purchaseItems(){
+	  var items = this.state.items;
+	  		
+	  for(var i = 0; i < items.length; i++){
+			this.savePurchase(i);
+	  }
+
+	  this.setState({items: []});
+	  localStorage.setItem('cart', JSON.stringify([]));
+  }
+  
+  savePurchase(i){
+	  var index = i;
+	  var items = this.state.items;
+	  
+	  var query = new Parse.Query('Product');
+	  
+	  query.equalTo('id', items[index].product.id)
+				.find({
+					success: function(results,i){
+						var Query = Parse.Object.extend('Purchase');
+						var p = new Query();
+						
+						console.log(items[index]);
+						p.set('product', results[0]);
+						p.set('user', Parse.User.current());
+						p.set('quantity', items[index].quantity);
+						
+						p.save().then(function(){
+						  console.log("done!");
+						}).catch(function(e){
+						  console.log("e");
+						});
+					},
+					error: function(error){
+						console.log(error);
+					}
+					
+				});
+  }
+
   updateTotals(){
 	  
   }
