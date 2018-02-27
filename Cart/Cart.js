@@ -11,8 +11,51 @@ import 'react-select/dist/react-select.css';
 class Cart extends Component{
   constructor(props){
     super(props);
-    this.state = {value:''};
+    this.state = {value: '', items: []};
+	
+	this.getItems = this.getItems.bind(this);
+	this.deleteItem = this.deleteItem.bind(this);
+	this.updateTotals = this.updateTotals.bind(this);
+	this.updateCart = this.updateTotals.bind(this);
   }
+  
+  componentDidMount(){
+	  this.getItems();
+  }
+  
+  getItems(){
+	  var cart = [];
+	  cart = JSON.parse(localStorage.getItem('cart'));
+	  
+	  this.setState({items: []});
+	  for(var i = 0; i < cart.length; i++){
+		var item = JSON.parse(cart[i].replace('/',''));
+		var currentItems = this.state.items;
+		this.setState({items: currentItems.push(item)});
+	  }
+  }
+  
+  deleteItem(item){
+	  var currentItems = this.state.items;
+	  var index = currentItems.indexOf(item);
+	  this.setState({items: currentItems.splice(index,1)});
+	  
+	  var cart = [];
+	  cart = JSON.parse(localStorage.getItem('cart'));
+	  cart.splice(index, 1);
+	  localStorage.setItem('cart',JSON.stringify(cart)); 
+  }
+  
+  updateTotals(){
+	  
+  }
+  
+  updateCart(){
+	  
+  }
+  
+
+  
   render(){
     return(
     

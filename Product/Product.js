@@ -41,14 +41,23 @@ class Product extends Component{
       });
     })
   }
+  
   quantityChange(change){
     var change = this.state.quantity+change;
     this.setState({quantity: change});
   }
+  
   addToCart(){
-    var item = this.getItem();
-    console.log(item);
+    var item = new Object();
+	item.product= this.state.product[0];
+	item.quantity = this.state.quantity;
+	
+	var cart = [];
+	cart = JSON.parse(localStorage.getItem('cart'))
+	cart.push(JSON.stringify(item));
+	localStorage.setItem('cart',JSON.stringify(cart)); 
   }
+  
   render(){
     return(
       <div>

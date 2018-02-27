@@ -32,6 +32,10 @@ class Login extends Component{
     Parse.User.logIn(this.state.name,this.state.password).then(() => {
       console.log("Login Success");
       this.setState({loggedIn: true});
+	  
+	  var cart = [];
+	  localStorage.setItem("cart", JSON.stringify(cart));
+	  
     }).catch(function(e){
       console.log("Login Failed");
     })
