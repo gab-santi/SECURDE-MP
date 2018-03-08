@@ -30,8 +30,8 @@ class Navbar extends Component {
     return(
       <div class="container-menu-header">
         <div class="wrap_header">
-          <a href="index.html" class="logo">
-      			<img src="../images/icons/logo.png" alt="IMG-LOGO"/>
+          <a href="/" class="logoo">
+      			<img src={require('../images/logo.png')}/>
       		</a>
           <div class="wrap_menu">
       			<nav class="menu">
@@ -60,19 +60,32 @@ class Navbar extends Component {
       					<li>
       						<a href="contact.html">Contact</a>
       					</li>
-        
+
                 { Parse.User.current() != null ? (
                 Parse.User.current().get('admin') == true ?
-                        <li>
-                            <a href="#">
-                                <Link to="/Track" style={LinkStyle}>Track</Link>
-                            </a>
-      					</li>
-                        : ""
-                    )
-                    : ""
-                }
-                        
+                <li>
+                    <a href="#">
+                        <Link to="/Track" style={LinkStyle}>Track</Link>
+                    </a>
+                </li> : ""
+                ): ""}
+                { Parse.User.current() != null ? (
+                Parse.User.current().get('admin') == true ?
+                <li>
+                    <a href="#">
+                        <Link to="/Accounts" style={LinkStyle}>Accounts</Link>
+                    </a>
+                </li> : ""
+                ): ""}
+                { Parse.User.current() != null ? (
+                Parse.User.current().get('admin') == true ?
+                <li>
+                    <a href="#">
+                        <Link to="/Products" style={LinkStyle}>Products</Link>
+                    </a>
+                </li> : ""
+                ): ""}
+
       				</ul>
       			</nav>
       		</div>

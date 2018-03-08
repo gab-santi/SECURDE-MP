@@ -13,7 +13,7 @@ class Item extends Component {
 	constructor(props){
 		super(props);
 
-		this.state = { product: props.item, price: 0, quantity: props.item.quantity}
+		this.state = { product: props.item, quantity: props.item.quantity}
 		console.log(this.state.quantity);
 	}
 	componentDidMount(){
@@ -23,7 +23,7 @@ class Item extends Component {
     	var change2 = this.state.quantity+change;
     	this.setState({quantity: change2});
 			this.props.totalChange(change*this.props.item.product.price);
-			this.props.changeQuantity(this,change);
+			//this.props.changeQuantity(this,change,this.props.index);
   	}
   	deleteItem() {
   		this.props.func(this.props.item);

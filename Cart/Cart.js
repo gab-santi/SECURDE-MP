@@ -22,6 +22,7 @@ class Cart extends Component{
 	this.savePurchase = this.savePurchase.bind(this);
   this.totalChange = this.totalChange.bind(this);
   this.addDefaultTotal = this.addDefaultTotal.bind(this);
+  this.changeQuantity = this.changeQuantity.bind(this);
   }
 
   componentDidMount(){
@@ -127,13 +128,13 @@ class Cart extends Component{
     var change2 = this.state.total+change;
     this.setState({total: change2});
   }
-  changeQuantity(item, change){
+  changeQuantity(item, change,index){
     console.log("ITEM: ",item);
     console.log("CHANGE: ",change);
     var newQuantity = item.quantity + change;
     item.quantity = newQuantity;
-    //item.setState({quantity: newQuantity});
-
+    item.setState({quantity: newQuantity});
+    localStorage.setItem('cart', JSON.stringify(this.state.items));
   }
   render(){
     return(
@@ -158,8 +159,9 @@ class Cart extends Component{
 
 						this.state.items.map((item) => {
 							//this.state.total += item.product.price * item.quantity;
+              console.log(this.state.items.indexOf(item));
 							return(
-								<Item key={item.id} item={item} func={this.deleteItem} totalChange={this.totalChange} changeQuantity={this.changeQuantity}/>
+								<Item key={item.id} item={item} func={this.deleteItem} totalChange={this.totalChange} changeQuantity={this.changeQuantity} index={this.state.items.indexOf(item)}/>
 						);
 						})
 

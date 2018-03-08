@@ -55,7 +55,7 @@ class Product extends Component{
 		  var item = new Object();
 			item.product= this.state.product[0];
 			item.quantity = this.state.quantity;
-			
+
 
 			var cart = [];
 			cart = JSON.parse(localStorage.getItem('cart'))
@@ -82,7 +82,7 @@ class Product extends Component{
               <h4 class="product-detail-name m-text16 p-b-13">
                 {this.state.name}
               </h4>
-              <span class="m-text17">₱{this.state.price}</span>
+              <span class="m-text17">${this.state.price}</span>
               <h5 class="m-text19" style={{"margin-top":"10px"}}>Description</h5>
               <p class="s-text8">{this.state.description}</p>
 

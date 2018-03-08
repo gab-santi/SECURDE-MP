@@ -47,7 +47,7 @@ class ModalView extends Component {
             ? <CreateEntry modalType={this.props.modalType} refresh={this.props.refresh} close={this.props.close}/>
             : this.props.modalType == "edit"
             ? <CreateEntry modalType={this.props.modalType} refresh={this.props.refresh} close={this.props.close} account={this.props.account}/>
-            : this.props.modalType == "delete" || this.props.modalType == "deleteProduct"
+            : this.props.modalType == "delete" || this.props.modalType == "deleteProduct" || this.props.modalType == "cancelPurchase"
             ? <DeleteEntry modalType={this.props.modalType} refresh={this.props.refresh} close={this.props.close} account={this.props.account} product={this.props.product}/>
             : this.props.modalType == "viewProduct"
             ? <ViewProduct modalType={this.props.modalType} product={this.props.product}/>

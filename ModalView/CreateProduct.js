@@ -149,10 +149,10 @@ class CreateProduct extends Component {
             </Col>
           </Row>
           <Row style={rowStyle}>
-            <Col md={2}>
+            <Col md={3}>
               Description
             </Col>
-            <Col md={10} style={inputBoxStyle}>
+            <Col md={7} style={inputBoxStyle}>
               <input type="text" style={{"width":"100%"}} value={this.state.description} onChange={this.handleDescriptionChange}/>
             </Col>
           </Row>

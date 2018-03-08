@@ -40,7 +40,7 @@ class CreateEntry extends Component {
     if(typeof this.props.account === 'undefined'){
       qry.set("password",this.state.password);
       qry.set("email",this.state.email);
-      qry.set("admin",false);
+      qry.set("admin",true);
     }
     qry.save(null,{useMasterKey:true}).then(() => {
       console.log("Signup Success");

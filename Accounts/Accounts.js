@@ -38,7 +38,7 @@ class Accounts extends Component {
   getAccountList(){
     var Query = new Parse.Query(Parse.User);
 
-    Query.equalTo("admin",false);
+    Query.equalTo("admin",true);
     Query.find().then((list) => {
       this.setState({accountList: list, accountCount: list.length});
     })
@@ -46,7 +46,7 @@ class Accounts extends Component {
   getDisplayList(){
     var Query = new Parse.Query(Parse.User);
 
-    Query.equalTo("admin",false);
+    Query.equalTo("admin",true);
     Query.limit(12);
     Query.skip(12*(this.state.activePage-1));
     Query.find({useMasterKey: true}).then((list) => {

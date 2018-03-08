@@ -31,11 +31,11 @@ class App extends Component {
           <Route path="/shop" component={Shop}/>
           <Route path="/cart" component={Cart}/>
           <Route path="/product" component={Product}/>
-          <Route path="/accounts" component={Accounts}/>
-          <Route path="/products" component={Products}/>
           { Parse.User.current() != null ? (
                 Parse.User.current().get('admin') == true ?
-                    <Route path="/track" component={Track}/>
+                    (<div><Route path="/track" component={Track}/>
+                    <Route path="/accounts" component={Accounts}/>
+                    <Route path="/products" component={Products}/></div>)
                     : ""
                 )
                 : ""
