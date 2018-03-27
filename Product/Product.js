@@ -5,6 +5,7 @@ import '../css/util.min.css';
 import '../fonts/font-awesome-4.7.0/css/font-awesome.min.css';
 import { Grid, Row, Col, PageHeader, Button} from 'react-bootstrap';
 import { Redirect } from 'react-router-dom';
+import { withCookies, Cookies } from 'react-cookie';
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
 
@@ -16,6 +17,7 @@ console.log("Session: " + Parse.Session.current());
 class Product extends Component{
   constructor(props){
     super(props);
+	this.cookies = new Cookies();
 
     this.state = { product: [], name: '', description: '', url: '', price: 0, quantity: 1}
     console.log(this.props.location.search.substr(1));
@@ -56,11 +58,14 @@ class Product extends Component{
 			item.product= this.state.product[0];
 			item.quantity = this.state.quantity;
 
-
-			var cart = [];
+			var cart = this.cookies.get('cart');
+			cart.push(item);
+			this.cookies.set('cart', cart);
+			
+			/* var cart = [];
 			cart = JSON.parse(localStorage.getItem('cart'))
 			cart.push(JSON.stringify(item));
-			localStorage.setItem('cart',JSON.stringify(cart));
+			localStorage.setItem('cart',JSON.stringify(cart)); */
 
 		  alert({name: this.state.product[0].get('name')}.name + " (Qty: " + this.state.quantity + ") added to Cart.");
 	  }

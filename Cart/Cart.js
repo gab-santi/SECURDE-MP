@@ -5,6 +5,7 @@ import '../css/util.min.css';
 import '../fonts/font-awesome-4.7.0/css/font-awesome.min.css';
 import { Grid, Row, Col, PageHeader, Button} from 'react-bootstrap';
 import { Redirect } from 'react-router-dom';
+import { withCookies, Cookies } from 'react-cookie';
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
 import Item from '../Cart/Item.js';
@@ -14,6 +15,7 @@ var Parse = require('parse');
 class Cart extends Component{
   constructor(props){
     super(props);
+	this.cookies = new Cookies();
     this.state = {value: '', items: [], total: 0, defaultTotal: 0};
 
 	this.getItems = this.getItems.bind(this);
@@ -39,13 +41,15 @@ class Cart extends Component{
   }
   getItems(){
 	  try{
-		  var cart = [];
-		  cart = JSON.parse(localStorage.getItem('cart'));
+		  var cart = this.cookies.get('cart');
+		  /* var cart = [];
+		  cart = JSON.parse(localStorage.getItem('cart')); */
 
 		  this.setState({items: []});
       var currentItems = this.state.items;
 		  for(var i = 0; i < cart.length; i++){
-  			var item = JSON.parse(cart[i].replace('/',''));
+  			var item = cart[i];
+			//var item = JSON.parse(cart[i].replace('/',''));
 
   			currentItems.push(item);
         if(i == cart.length-1){
@@ -66,10 +70,14 @@ class Cart extends Component{
 		  var index = currentItems.indexOf(item);
 		  this.setState({items: currentItems.splice(index,1)});
 
-		  var cart = [];
+		  var cart = this.cookies.get('cart');
+		  cart.splice(index, 1);
+		  this.cookies.set('cart', cart);
+		  
+		  /* var cart = [];
 		  cart = JSON.parse(localStorage.getItem('cart'));
 		  cart.splice(index, 1);
-		  localStorage.setItem('cart',JSON.stringify(cart));
+		  localStorage.setItem('cart',JSON.stringify(cart)); */
 
 		  this.setState({total: 0});
 	  }
@@ -134,7 +142,10 @@ class Cart extends Component{
     var newQuantity = item.quantity + change;
     item.quantity = newQuantity;
     item.setState({quantity: newQuantity});
-    localStorage.setItem('cart', JSON.stringify(this.state.items));
+	
+	this.cookies.set('cart', this.state.items);
+	
+    //localStorage.setItem('cart', JSON.stringify(this.state.items));
   }
   render(){
     return(

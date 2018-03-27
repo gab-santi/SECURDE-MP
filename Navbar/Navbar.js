@@ -21,7 +21,8 @@ class Navbar extends Component {
   logout(){
     Parse.User.logOut().then(() => {
       this.setState({loggedIn:false});
-      localStorage.clear();
+      
+	  //localStorage.clear();
       window.location.href = "/";
     });
   }

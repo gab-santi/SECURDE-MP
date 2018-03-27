@@ -2,12 +2,15 @@ import React, { Component } from 'react';
 import '../App.css';
 import { Grid, Row, Col, PageHeader, Button} from 'react-bootstrap';
 import { Redirect } from 'react-router-dom'
+import { withCookies, Cookies } from 'react-cookie';
 
 var Parse = require('parse');
 
 class Login extends Component{
   constructor(props){
     super(props);
+	this.cookies = new Cookies();
+	
     this.state = {name: '',
                   password: '',
                   loggedIn: ''};
@@ -33,8 +36,9 @@ class Login extends Component{
       console.log("Login Success");
       this.setState({loggedIn: true});
 	  
-	  var cart = [];
-	  localStorage.setItem("cart", JSON.stringify(cart));
+	  this.cookies.set('cart', []);
+	  /* var cart = [];
+	  localStorage.setItem("cart", JSON.stringify(cart)); */
 	  
     }).catch(function(e){
       console.log("Login Failed");

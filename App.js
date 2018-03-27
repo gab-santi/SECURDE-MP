@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import { Switch, Route, Link } from "react-router-dom";
+import { instanceOf } from 'prop-types';
+import { withCookies, Cookies } from 'react-cookie';
 import Home from './Home/Home.js';
 import Navbar from './Navbar/Navbar.js';
 import Login from './Login/Login.js';
@@ -21,6 +23,11 @@ Parse.masterKey = 'securdemp1234';
 console.log(Parse.User.current());
 
 class App extends Component {
+	
+  static propTypes = {
+    cookies: instanceOf(Cookies).isRequired
+  };
+  
   render() {
     return (
       <div className="App">
