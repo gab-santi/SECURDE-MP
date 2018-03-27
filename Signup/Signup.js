@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import '../App.css';
-import { Grid, Row, Col, PageHeader, Button, FormGroup, FormControl, ControlLabel} from 'react-bootstrap';
+import { Grid, Row, Col, PageHeader, Button, FormGroup, FormControl, ControlLabel, ProgressBar} from 'react-bootstrap';
 import { Redirect } from 'react-router-dom'
 
 var Parse = require('parse');
+var zxcvbn = require('zxcvbn');
 
 class Signup extends Component{
   constructor(props){
@@ -12,7 +13,8 @@ class Signup extends Component{
                   password: '',
                   email: '',
                   loggedIn: '',
-                  unSelect: "#696969",pwSelect: "#696969",emSelect: "#696969"};
+                  unSelect: "#696969",pwSelect: "#696969",emSelect: "#696969",
+                  pwStrength: '', pwColor: '', pwScore: 0, pwBar: ''};
 
     this.handleNameChange = this.handleNameChange.bind(this);
     this.handlePasswordChange = this.handlePasswordChange.bind(this);
@@ -25,7 +27,29 @@ class Signup extends Component{
   }
 
   handlePasswordChange(event){
-    this.setState({password:event.target.value});
+    this.setState({password:event.target.value}, () => {
+      console.log(zxcvbn(this.state.password).score);
+      var score = zxcvbn(this.state.password).score;
+
+      if(this.state.password == ''){
+        this.setState({pwStrength:"",pwColor:"black",pwScore:0, pwBar:"danger"});
+      }
+      else if(score==0){
+        this.setState({pwStrength:"Worst",pwColor:"#D9534F",pwScore:20, pwBar:"danger"});
+      }
+      else if(score==1){
+        this.setState({pwStrength:"Weak",pwColor:"#F0AD4E",pwScore:40, pwBar:"warning"});
+      }
+      else if(score==2){
+        this.setState({pwStrength:"Bad",pwColor:"#FFFF99",pwScore:60, pwBar:"warning"});
+      }
+      else if(score==3){
+        this.setState({pwStrength:"Good",pwColor:"#5BC0DE",pwScore:80, pwBar:"info"});
+      }
+      else if(score==4){
+        this.setState({pwStrength:"Strong",pwColor:"#5CB85C",pwScore:95, pwBar:"success"});
+      }
+    });
   }
 
   handleEmailChange(event){
@@ -60,7 +84,7 @@ class Signup extends Component{
       <div>
         <div class="container" style={{"margin":"0px auto","width":"27.5%"}}>
           <div class="header" style={{"backgroundColor":"#2B3840","color":"white","padding":"12.5px","fontFamily":"Century Gothic","fontSize":"17.5px","fontWeight":"bold"}}>
-            <div style={{"borderBottom":"3px solid white","paddingBottom":"10px","paddingTop":"17.5px"}}>
+            <div style={{"borderBottom":"3px solid white","paddingBottom":"10px","paddingTop":"25.5px"}}>
               SIGN UP
             </div>
           </div>
@@ -73,19 +97,21 @@ class Signup extends Component{
               </div>
             </FormGroup>
             <FormGroup>
-              <ControlLabel>PASSWORD</ControlLabel>
-              <div style={inputBox2Style}>
-                <i class="fas fa-key" style={{"marginRight":"5px"}}></i>
-                <input type="password" value={this.state.password} onFocus={() => this.setState({pwSelect:"white"})} onBlur={() => this.setState({pwSelect:"#696969"})} onChange={this.handlePasswordChange} style={{"width":"90%", "backgroundColor":"#2B3840","fontSize":"12.5px"}}/>
-              </div>
-            </FormGroup>
-            <FormGroup>
               <ControlLabel>EMAIL</ControlLabel>
               <div style={inputBox3Style}>
                 <i class="fas fa-envelope" style={{"marginRight":"5px"}}></i>
                 <input type="email" value={this.state.email} onFocus={() => this.setState({emSelect:"white"})} onBlur={() => this.setState({emSelect:"#696969"})} onChange={this.handleEmailChange} style={{"width":"90%", "backgroundColor":"#2B3840","fontSize":"12.5px"}}/>
               </div>
             </FormGroup>
+            <FormGroup>
+              <ControlLabel>PASSWORD</ControlLabel>
+              <div style={inputBox2Style}>
+                <i class="fas fa-key" style={{"marginRight":"5px"}}></i>
+                <input type="password" value={this.state.password} onFocus={() => this.setState({pwSelect:"white"})} onBlur={() => this.setState({pwSelect:"#696969"})} onChange={this.handlePasswordChange} style={{"width":"90%", "backgroundColor":"#2B3840","fontSize":"12.5px"}}/>
+              </div>
+            </FormGroup>
+            <ControlLabel style={{"color":"#494949"}}>PASSWORD STRENGTH: <div style={{"display":"inline-block","color":this.state.pwColor}}>{this.state.pwStrength}</div></ControlLabel>
+            <ProgressBar now={this.state.pwScore} bsStyle={this.state.pwBar} style={{"height":"10px"}}/>
             <button onClick={this.handleSubmit} bsSize="large" style={submitButtonStyle}>SIGN UP</button>
             <div style={{"height":"70px"}}></div>
           </div>
