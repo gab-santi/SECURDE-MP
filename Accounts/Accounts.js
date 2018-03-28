@@ -9,6 +9,7 @@ import Select from 'react-select';
 import 'react-select/dist/react-select.css';
 import Pagination from 'react-js-pagination';
 import ModalView from '../ModalView/ModalView.js';
+import { Link } from "react-router-dom";
 
 var Parse = require('parse');
 const moment = require('moment');
@@ -18,7 +19,7 @@ class Accounts extends Component {
     super();
 
     this.state = { accountList: [], displayList: [], activePage: 1, accountCount: 0,
-                   modalType: '', account: '', showModal: false}
+                   modalType: '', account: '', showModal: false};
 
     this.getAccountList = this.getAccountList.bind(this);
     this.getDisplayList = this.getDisplayList.bind(this);
@@ -36,22 +37,24 @@ class Accounts extends Component {
     this.getDisplayList();
   }
   getAccountList(){
-    var Query = new Parse.Query(Parse.User);
-
+    var Query = new Parse.Query("User");
     Query.equalTo("admin",true);
+      
+      
     Query.find().then((list) => {
       this.setState({accountList: list, accountCount: list.length});
-    })
+    });
   }
   getDisplayList(){
-    var Query = new Parse.Query(Parse.User);
-
+    var Query = new Parse.Query("User");
     Query.equalTo("admin",true);
+      
+      
     Query.limit(12);
     Query.skip(12*(this.state.activePage-1));
     Query.find({useMasterKey: true}).then((list) => {
       this.setState({displayList: list});
-    })
+    });
   }
   handlePageChange(pageNumber){
     this.setState({activePage: pageNumber,displayList: []}, () => {
@@ -71,10 +74,19 @@ class Accounts extends Component {
   }
   closeModal(){
     this.setState({showModal: false});
-    console.log("WORK")
   }
   render(){
-    var iconStyle = {margin:"5px", color:"black"}
+    var iconStyle = {margin:"5px", color:"black"};
+    if (Parse.User.current() == null || Parse.User.current().get('admin') == false) {
+        return(
+            <div>
+                <div> Sorry, you must be an Administrator in order to access this page. </div>
+                <a href="#">
+                    <Link to="/">Back to Home</Link>
+                </a>
+            </div>
+        )
+    } else {
     return(
       <div style={{"margin":"0px auto","width":"70%"}}>
         <Grid>
@@ -115,14 +127,14 @@ class Accounts extends Component {
                     </td>
                 </tr>
               )
-            }))
-            }
+            }))}
           </tbody>
         </Table>
         <Pagination activePage={this.state.activePage} itemsCountPerPage={10} totalItemsCount={this.state.accountCount} onChange={this.handlePageChange}/>
         <ModalView style={{"margin-top":"300px"}} modalType={this.state.modalType} refresh={this.refreshList} close={this.closeModal}  account={this.state.account} show={this.state.showModal}/>
       </div>
     )
+    }
   }
 }
 

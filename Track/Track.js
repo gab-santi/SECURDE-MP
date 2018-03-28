@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import '../App.css';
+import '../css/main.min.css';
+import '../css/util.min.css';
 import '../fonts/font-awesome-4.7.0/css/font-awesome.min.css';
 import { Table, Grid, Row, Col, PageHeader, Button} from 'react-bootstrap';
 import { Redirect } from 'react-router-dom';
@@ -7,6 +9,7 @@ import Select from 'react-select';
 import 'react-select/dist/react-select.css';
 import Pagination from 'react-js-pagination';
 import ModalView from '../ModalView/ModalView.js';
+import { Link } from "react-router-dom";
 
 var Parse = require('parse');
 const moment = require('moment');
@@ -51,7 +54,6 @@ class Track extends Component{
     Query.skip(12*(this.state.activePage-1));
     Query.find({useMasterKey: true}).then((list) => {
       this.setState({displayList: list});
-      console.log(list);
     })
   }
   handlePageChange(pageNumber){
@@ -74,57 +76,62 @@ class Track extends Component{
     this.setState({showModal: false});
   }
   render(){
-    var iconStyle = {margin:"5px", color:"black"}
-    return(
-      <div style={{"margin":"0px auto","width":"90%"}}>
-        <Pagination activePage={this.state.activePage} itemsCountPerPage={10} totalItemsCount={this.state.purchaseCount} onChange={this.handlePageChange}/>
-        <Table striped bordered condensed hover>
-          <thead>
-            <tr>
-              <th>Date</th>
-              <th>User</th>
-              <th>Product</th>
-              <th>Price</th>
-              <th>Quantity</th>
-              <th>Total</th>
-            </tr>
-          </thead>
-          <tbody>
-            { this.state.displayList.map((item => {
-              return (
-                <tr>
-                  { typeof item.get('createdAt') === 'undefined'
-                    ? <td> --- </td>
-                    : <td> { moment(item.get('createdAt')).format("MM-DD-YYYY") } </td> }
-                  { typeof item.get('user') === 'undefined'
-                    ? <td> --- </td>
-                    : <td> { item.get('user').get('username') } </td> }
-                  { typeof item.get('product') === 'undefined'
-                    ? <td> --- </td>
-                    : <td> { item.get('product').get('name') } </td> }
-                  { typeof item.get('product') === 'undefined'
-                    ? <td> --- </td>
-                    : <td> { item.get('product').get('price') } </td> }
-                  { typeof item.get('quantity') === 'undefined'
-                    ? <td> --- </td>
-                    : <td> { item.get('quantity') } </td> }
-                  { typeof item.get('quantity') === 'undefined' || item.get('product') === 'undefined'
-                    ? <td> --- </td>
-                    : <td> { item.get('quantity') * item.get('product').get('price') } </td> }
-                  <td>
-                    <a href="#" onClick={() => this.setItem("cancelPurchase",item)}><i class="fas fa-trash-alt" style={iconStyle}></i></a>
-                  </td>
-                </tr>
-              )
-            }))
-            }
-          </tbody>
-        </Table>
-        <Pagination activePage={this.state.activePage} itemsCountPerPage={12} totalItemsCount={this.state.purchaseCount} onChange={this.handlePageChange}/>
-        <ModalView modalType={this.state.modalType} refresh={this.refreshList} close={this.closeModal}  product={this.state.product} show={this.state.showModal}/>
-
-      </div>
-    )
+    var iconStyle = {margin:"5px", color:"black"};
+    if (Parse.User.current() == null || Parse.User.current().get('admin') == false) {
+        return(
+            <div>
+                <div> Sorry, you must be an Administrator in order to access this page. </div>
+                <Link to="/">Back to Home</Link>
+            </div>
+        )
+    } else { return(
+        <div style={{"margin":"0px auto","width":"90%"}}>
+            <Pagination activePage={this.state.activePage} itemsCountPerPage={10} totalItemsCount={this.state.purchaseCount} onChange={this.handlePageChange}/>
+            <Table striped bordered condensed hover>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>User</th>
+                        <th>Product</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    { this.state.displayList.map((item => { return (
+                        <tr>
+                            { typeof item.get('createdAt') === 'undefined'
+                             ? <td> --- </td>
+                             : <td> { moment(item.get('createdAt')).format("MM-DD-YYYY") } </td> }
+                            { typeof item.get('user') === 'undefined'
+                             ? <td> --- </td>
+                             : <td> { item.get('user').get('username') } </td> }
+                            { typeof item.get('product') === 'undefined'
+                             ? <td> --- </td>
+                             : <td> { item.get('product').get('name') } </td> }
+                            { typeof item.get('product') === 'undefined'
+                             ? <td> --- </td>
+                             : <td> { item.get('product').get('price') } </td> }
+                            { typeof item.get('quantity') === 'undefined'
+                             ? <td> --- </td>
+                             : <td> { item.get('quantity') } </td> }
+                            { typeof item.get('quantity') === 'undefined' || item.get('product') === 'undefined'
+                             ? <td> --- </td>
+                             : <td> { item.get('quantity') * item.get('product').get('price') } </td> }
+                            <td>
+                                <a href="#" onClick={() => this.setItem("cancelPurchase",item)}>
+                                    <i class="fas fa-trash-alt" style={iconStyle}></i>
+                                </a>
+                            </td>
+                        </tr>
+                    )}))}
+                </tbody>
+            </Table>
+            <Pagination activePage={this.state.activePage} itemsCountPerPage={12} totalItemsCount={this.state.purchaseCount} onChange={this.handlePageChange}/>
+            <ModalView modalType={this.state.modalType} refresh={this.refreshList} close={this.closeModal}  product={this.state.product} show={this.state.showModal}/>
+        </div>
+    )}
   }
 }
 
