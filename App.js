@@ -14,6 +14,7 @@ import Product from './Product/Product.js';
 import Accounts from './Accounts/Accounts.js';
 import Products from './Products/Products.js';
 import Track from './Track/Track.js';
+import Log from './Log/Log.js';
 
 var Parse = require('parse');
 Parse.initialize("securdemp",);
@@ -42,7 +43,8 @@ class App extends Component {
                 Parse.User.current().get('admin') == true ?
                     (<div><Route path="/track" component={Track}/>
                     <Route path="/accounts" component={Accounts}/>
-                    <Route path="/products" component={Products}/></div>)
+                    <Route path="/products" component={Products}/>
+                    <Route path="/log" component={Log}/></div>)
                     : ""
                 )
                 : ""

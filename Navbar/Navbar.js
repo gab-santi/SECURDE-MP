@@ -104,6 +104,14 @@ class Navbar extends Component {
                     </a>
                 </li> : ""
                 ): ""}
+                { Parse.User.current() != null ? (
+                Parse.User.current().get('admin') == true ?
+                <li>
+                    <a href="#">
+                        <Link to="/Log" style={LinkStyle}>Log</Link>
+                    </a>
+                </li> : ""
+                ): ""}
 
       				</ul>
       			</nav>

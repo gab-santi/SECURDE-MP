@@ -39,12 +39,13 @@ class Login extends Component{
     var QueryCheck = new Parse.Query("Log");
     QueryCheck.limit(5);
     QueryCheck.equalTo("username", usernameTemp);
+    QueryCheck.equalTo("type", "Login Failure");
     QueryCheck.greaterThan("updatedAt", moment().subtract(15, 'minutes').toDate());
     QueryCheck.find().then((list) => {
         
         if (list.length < 5) { //account is not locked out
             
-            Parse.User.logIn(this.state.name,this.state.password).then(() => { //attempt login
+            Parse.User.logIn(usernameTemp, passwordTemp).then(() => { //attempt login
                 console.log("Login Success");
                 this.setState({loggedIn: true});
 	            this.cookies.set('cart', []);
@@ -92,14 +93,14 @@ class Login extends Component{
                     }).catch(e => {
                         console.log(e);
                     });
-                }, 500);
+                }, 1000);
 
                 document.getElementById("failPrompt").innerHTML = "Invalid Username or Password, please try again.";
                 document.getElementById("failPrompt").style.visibility="visible";
             })
             
         } else { //lockout account
-            document.getElementById("failPrompt").innerHTML = "You have made too many login attempts, please try again in 15 minutes.";
+            document.getElementById("failPrompt").innerHTML = "You have made too many failed login attempts, please try again in 15 minutes.";
             document.getElementById("failPrompt").style.visibility="visible";
         }
     });
