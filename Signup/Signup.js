@@ -71,9 +71,8 @@ class Signup extends Component{
     })
     this.setState({name: '',password: '', email: ''});
   }
-
+//2B3840
   render(){
-    console.log("UNSELECT: ", this.state.unSelect);
     var inputBox1Style = {border: '1px solid #e6e6e6', borderRadius: '2px', padding: '10px', color: this.state.unSelect, width: '100%'};
     var inputBox2Style = {border: '1px solid #e6e6e6', borderRadius: '2px', padding: '10px', color: this.state.pwSelect, width: '100%'};
     var inputBox3Style = {border: '1px solid #e6e6e6', borderRadius: '2px', padding: '10px', color: this.state.emSelect, width: '100%'};
@@ -83,31 +82,31 @@ class Signup extends Component{
     return(
       <div>
         <div class="container" style={{"margin":"0px auto","width":"27.5%"}}>
-          <div class="header" style={{"backgroundColor":"#2B3840","color":"white","padding":"12.5px","fontFamily":"Century Gothic","fontSize":"17.5px","fontWeight":"bold"}}>
-            <div style={{"borderBottom":"3px solid white","paddingBottom":"10px","paddingTop":"25.5px"}}>
+          <div class="header" style={{"backgroundColor":"white","boxShadow": "0 1px 2px rgba(0,0,0,.05),0 0 0 1px rgba(63,63,68,.1)","color":"#2B3840","padding":"12.5px","fontFamily":"Century Gothic","fontSize":"17.5px","fontWeight":"bold"}}>
+            <div style={{"borderBottom":"3px solid #2B3840","paddingBottom":"10px","paddingTop":"25.5px"}}>
               SIGN UP
             </div>
           </div>
-          <div class="content" style={{"color":"white","backgroundColor":"#2B3840","textAlign":"left","padding":"40px","paddingTop":"35px","fontSize":"12.5px","fontWeight":"normal"}}>
+          <div class="content" style={{"color":"#2B3840","backgroundColor":"white","boxShadow": "0 1px 2px rgba(0,0,0,.05),0 0 0 1px rgba(63,63,68,.1)","textAlign":"left","padding":"40px","paddingTop":"35px","fontSize":"12.5px","fontWeight":"normal"}}>
             <FormGroup>
               <ControlLabel>USERNAME</ControlLabel>
               <div style={inputBox1Style}>
                 <i class="fas fa-user" style={{"marginRight":"5px"}}></i>
-                <input type="text" value={this.state.name} onFocus={() => this.setState({unSelect:"white"})} onBlur={() => this.setState({unSelect:"#696969"})} onChange={this.handleNameChange} style={{"width":"90%", "backgroundColor":"#2B3840","fontSize":"12.5px"}}/>
+                <input type="text" value={this.state.name} onFocus={() => this.setState({unSelect:"#2B3840"})} onBlur={() => this.setState({unSelect:"#696969"})} onChange={this.handleNameChange} style={{"width":"90%", "backgroundColor":"#ffffff","fontSize":"12.5px"}}/>
               </div>
             </FormGroup>
             <FormGroup>
               <ControlLabel>EMAIL</ControlLabel>
               <div style={inputBox3Style}>
                 <i class="fas fa-envelope" style={{"marginRight":"5px"}}></i>
-                <input type="email" value={this.state.email} onFocus={() => this.setState({emSelect:"white"})} onBlur={() => this.setState({emSelect:"#696969"})} onChange={this.handleEmailChange} style={{"width":"90%", "backgroundColor":"#2B3840","fontSize":"12.5px"}}/>
+                <input type="email" value={this.state.email} onFocus={() => this.setState({emSelect:"#2B3840"})} onBlur={() => this.setState({emSelect:"#696969"})} onChange={this.handleEmailChange} style={{"width":"90%", "backgroundColor":"#ffffff","fontSize":"12.5px"}}/>
               </div>
             </FormGroup>
             <FormGroup>
               <ControlLabel>PASSWORD</ControlLabel>
               <div style={inputBox2Style}>
                 <i class="fas fa-key" style={{"marginRight":"5px"}}></i>
-                <input type="password" value={this.state.password} onFocus={() => this.setState({pwSelect:"white"})} onBlur={() => this.setState({pwSelect:"#696969"})} onChange={this.handlePasswordChange} style={{"width":"90%", "backgroundColor":"#2B3840","fontSize":"12.5px"}}/>
+                <input type="password" value={this.state.password} onFocus={() => this.setState({pwSelect:"#2B3840"})} onBlur={() => this.setState({pwSelect:"#696969"})} onChange={this.handlePasswordChange} style={{"width":"90%", "backgroundColor":"#ffffff","fontSize":"12.5px"}}/>
               </div>
             </FormGroup>
             <ControlLabel style={{"color":"#494949"}}>PASSWORD STRENGTH: <div style={{"display":"inline-block","color":this.state.pwColor}}>{this.state.pwStrength}</div></ControlLabel>
