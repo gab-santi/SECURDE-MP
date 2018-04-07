@@ -4,6 +4,7 @@ import '../css/bootstrap/css/bootstrap.min.css';
 import { Switch, Route, Link , Redirect} from "react-router-dom";
 
 var Parse = require('parse');
+const moment = require('moment');
 
 class Navbar extends Component {
   constructor(props){
@@ -19,8 +20,24 @@ class Navbar extends Component {
   }
 
   logout(){
+    var usernameTemp = Parse.User.current().get('username');
+    
     Parse.User.logOut().then(() => {
       this.setState({loggedIn:false});
+        
+      //log logout
+      var QueryLog = Parse.Object.extend("Log");
+      var qryLog = new QueryLog();
+
+      qryLog.set('type', "Logout");
+      qryLog.set('username', usernameTemp);
+      qryLog.set('message', "user[" + usernameTemp + "] logged out.");
+
+      qryLog.save().then( () =>{
+        
+      }).catch(e => {
+        console.log(e);
+      });
       
 	  //localStorage.clear();
       window.location.href = "/";

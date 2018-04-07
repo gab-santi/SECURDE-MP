@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
 import '../App.css';
 import '../fonts/font-awesome-4.7.0/css/font-awesome.min.css';
-import { Table, Grid, Row, Col, Button} from 'react-bootstrap';
+import { Table, Grid, Row, Col, PageHeader, Button} from 'react-bootstrap';
+import { Redirect } from 'react-router-dom';
+import Select from 'react-select';
 import 'react-select/dist/react-select.css';
 import Pagination from 'react-js-pagination';
 import ModalView from '../ModalView/ModalView.js';
-import { Link } from "react-router-dom";
 
 var Parse = require('parse');
+const moment = require('moment');
 
 class Products extends Component {
   constructor(){
@@ -45,6 +47,7 @@ class Products extends Component {
     Query.skip(12*(this.state.activePage-1));
     Query.find({useMasterKey: true}).then((list) => {
       this.setState({displayList: list});
+      console.log(list);
     })
   }
   handlePageChange(pageNumber){
@@ -69,16 +72,6 @@ class Products extends Component {
   }
   render(){
     var iconStyle = {margin:"5px", color:"black"}
-    if (Parse.User.current() == null || Parse.User.current().get('admin') == false) {
-        return(
-            <div>
-                <div> Sorry, you must be an Administrator in order to access this page. </div>
-                <a href="#">
-                    <Link to="/">Back to Home</Link>
-                </a>
-            </div>
-        )
-    } else {
     return(
       <div style={{"margin":"0px auto","width":"90%"}}>
         <Grid>
@@ -143,7 +136,6 @@ class Products extends Component {
 
       </div>
     )
-    }
   }
 }
 

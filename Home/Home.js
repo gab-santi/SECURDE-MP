@@ -106,7 +106,6 @@ class Home extends Component {
     <div class="categories">
         <div style={{"margin":"0px auto","width":"80%"}}>
             { this.state.displayProducts.map((item) => {
-                console.log("Item: ", item);
                 return(
                     <Item key={item.id} item={item} style={{"display":"inline","width":"10%"}}/>
                 )

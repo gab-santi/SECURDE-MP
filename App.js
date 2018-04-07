@@ -47,9 +47,6 @@ class App extends Component {
                 )
                 : ""
           }
-          <Route path="/track" component={Track}/>
-          <Route path="/accounts" component={Accounts}/>
-          <Route path="/products" component={Products}/>
           { Parse.User.current() == null
             ?
             <div>
