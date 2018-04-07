@@ -100,6 +100,22 @@ class Login extends Component{
             })
             
         } else { //lockout account
+            
+            //log account lockout
+            var QueryLog = Parse.Object.extend("Log");
+            var qryLog = new QueryLog();
+
+            qryLog.set('type', "Account Lockout");
+            qryLog.set('username', usernameTemp);
+            qryLog.set('message', "Attempted login to locked account user[" + usernameTemp + 
+                        "resulting in failure and lockout extension.");
+
+            qryLog.save().then( () =>{
+        
+            }).catch(e => {
+                console.log(e);
+            });
+            
             document.getElementById("failPrompt").innerHTML = "You have made too many failed login attempts, please try again in 15 minutes.";
             document.getElementById("failPrompt").style.visibility="visible";
         }
