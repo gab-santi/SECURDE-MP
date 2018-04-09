@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import '../App.css';
 import { Grid, Row, Col, PageHeader, Button, FormGroup, FormControl, ControlLabel, ProgressBar} from 'react-bootstrap';
-import { Redirect } from 'react-router-dom'
 import { withCookies, Cookies } from 'react-cookie';
+import { Switch, Route, Link , Redirect} from "react-router-dom";
 
 var Parse = require('parse');
 const moment = require('moment');
@@ -35,15 +35,16 @@ class Login extends Component{
 
     var usernameTemp = this.state.name;
     var passwordTemp = this.state.password;
+
     var QueryCheck = new Parse.Query("Log");
     QueryCheck.limit(5);
     QueryCheck.equalTo("username", usernameTemp);
     QueryCheck.greaterThan("updatedAt", moment().subtract(15, 'minutes').toDate());
     QueryCheck.find().then((list) => {
-
+      console.log(this.state.name, this.state.password);
         if (list.length < 5) { //account is not locked out
 
-            Parse.User.logIn(this.state.name,this.state.password).then(() => { //attempt login
+            Parse.User.logIn(usernameTemp,passwordTemp).then(() => { //attempt login
                 console.log("Login Success");
                 this.setState({loggedIn: true});
 	            this.cookies.set('cart', []);
@@ -122,31 +123,34 @@ class Login extends Component{
     return(
       <div>
         <div class="container" style={{"margin":"0px auto","width":"27.5%"}}>
-          <div class="header" style={{"backgroundColor":"#2B3840","color":"white","padding":"12.5px","fontFamily":"Century Gothic","fontSize":"17.5px","fontWeight":"bold"}}>
-            <div style={{"borderBottom":"3px solid white","paddingBottom":"10px","paddingTop":"25.5px"}}>
+          <div class="header" style={{"backgroundColor":"white","boxShadow": "0 1px 2px rgba(0,0,0,.05),0 0 0 1px rgba(63,63,68,.1)","color":"#2B3840","padding":"12.5px","fontFamily":"Century Gothic","fontSize":"17.5px","fontWeight":"bold"}}>
+            <div style={{"borderBottom":"3px solid #2B3840","paddingBottom":"10px","paddingTop":"25.5px"}}>
               LOGIN
             </div>
           </div>
-          <div class="content" style={{"color":"white","backgroundColor":"#2B3840","textAlign":"left","padding":"40px","paddingTop":"35px","fontSize":"12.5px","fontWeight":"normal"}}>
+          <div class="content" style={{"color":"#2B3840","backgroundColor":"white","boxShadow": "0 1px 2px rgba(0,0,0,.05),0 0 0 1px rgba(63,63,68,.1)","textAlign":"left","padding":"40px","paddingTop":"35px","fontSize":"12.5px","fontWeight":"normal"}}>
             <FormGroup>
               <ControlLabel>USERNAME</ControlLabel>
               <div style={inputBox1Style}>
                 <i class="fas fa-user" style={{"marginRight":"5px"}}></i>
-                <input type="text" value={this.state.name} onFocus={() => this.setState({unSelect:"white"})} onBlur={() => this.setState({unSelect:"#696969"})} onChange={this.handleNameChange} style={{"width":"90%", "backgroundColor":"#2B3840","fontSize":"12.5px"}}/>
+                <input type="text" value={this.state.name} onFocus={() => this.setState({unSelect:"#2B3840"})} onBlur={() => this.setState({unSelect:"#696969"})} onChange={this.handleNameChange} style={{"width":"90%", "backgroundColor":"#ffffff","fontSize":"12.5px"}}/>
               </div>
             </FormGroup>
             <FormGroup>
               <ControlLabel>PASSWORD</ControlLabel>
               <div style={inputBox2Style}>
                 <i class="fas fa-key" style={{"marginRight":"5px"}}></i>
-                <input type="password" value={this.state.password} onFocus={() => this.setState({pwSelect:"white"})} onBlur={() => this.setState({pwSelect:"#696969"})} onChange={this.handlePasswordChange} style={{"width":"90%", "backgroundColor":"#2B3840","fontSize":"12.5px"}}/>
+                <input type="password" value={this.state.password} onFocus={() => this.setState({pwSelect:"#2B3840"})} onBlur={() => this.setState({pwSelect:"#696969"})} onChange={this.handlePasswordChange} style={{"width":"90%", "backgroundColor":"#ffffff","fontSize":"12.5px"}}/>
               </div>
             </FormGroup>
+            <Row>
+            <Link to='/identify' style={{"color":"#696969","fontSize":"12.5px"}}>Forgot your password?</Link>
+            </Row>
             <button onClick={this.handleSubmit} bsSize="large" style={submitButtonStyle}>SUBMIT</button>
             <Row id='failPrompt' style={failStyle}>
             <Col md={10}>lorem ipsum</Col>
           </Row>
-            <div style={{"height":"70px"}}></div>
+            <div style={{"height":"50px"}}></div>
           </div>
           <div class="footer">
           </div>

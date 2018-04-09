@@ -30,7 +30,7 @@ class Log extends Component{
   }
   getLogList(){
     var Query = new Parse.Query("Log");
-      
+
     Query.find().then((list) => {
       this.setState({logList: list, logCount: list.length});
     })

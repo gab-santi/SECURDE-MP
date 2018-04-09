@@ -15,20 +15,34 @@ import Accounts from './Accounts/Accounts.js';
 import Products from './Products/Products.js';
 import Track from './Track/Track.js';
 import Log from './Log/Log.js';
+import ForgotPw from './Login/ForgotPw.js';
 
 var Parse = require('parse');
-Parse.initialize("securdemp",);
-Parse.serverURL = 'https://marsh-month.glitch.me/parse'
-Parse.masterKey = 'securdemp1234';
 
+Parse.initialize("securdemp",);
+Parse.serverURL = 'https://marsh-month.glitch.me/parse';
+Parse.masterKey = 'securdemp1234';
+Parse.appName = 'securedemp';
+Parse.publicServerURL = 'https://marsh-month.glitch.me/parse';
+Parse.emailAdapter = {
+	module: '@parse/simple-mailgun-adapter',
+			 options: {
+					 // The address that your emails come from
+					 fromAddress: 'admin@securdemp.com',
+					 // Your domain from mailgun.com
+					 domain: 'postmaster@securde.mp.com',
+					 // Your API key from mailgun.com
+					 apiKey: 'key-274f30a73d26041581dc25281a53a4d8',
+			 }
+}
 console.log(Parse.User.current());
 
 class App extends Component {
-	
+
   static propTypes = {
     cookies: instanceOf(Cookies).isRequired
   };
-  
+
   render() {
     return (
       <div className="App">
@@ -39,6 +53,7 @@ class App extends Component {
           <Route path="/shop" component={Shop}/>
           <Route path="/cart" component={Cart}/>
           <Route path="/product" component={Product}/>
+					<Route path="/identify" component={ForgotPw}/>
           { Parse.User.current() != null ? (
                 Parse.User.current().get('admin') == true ?
                     (<div><Route path="/track" component={Track}/>
