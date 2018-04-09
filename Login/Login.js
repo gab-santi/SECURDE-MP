@@ -33,15 +33,17 @@ class Login extends Component{
     var Query = Parse.Object.extend(Parse.User);
     var qry = new Query();
 
+    console.log(this.state.name, this.state.password);
     var usernameTemp = this.state.name;
     var passwordTemp = this.state.password;
 
+    //check if account should be locked
     var QueryCheck = new Parse.Query("Log");
     QueryCheck.limit(5);
     QueryCheck.equalTo("username", usernameTemp);
     QueryCheck.greaterThan("updatedAt", moment().subtract(15, 'minutes').toDate());
     QueryCheck.find().then((list) => {
-      console.log(this.state.name, this.state.password);
+        
         if (list.length < 5) { //account is not locked out
 
             Parse.User.logIn(usernameTemp,passwordTemp).then(() => { //attempt login
@@ -98,6 +100,22 @@ class Login extends Component{
                 document.getElementById("failPrompt").style.visibility="visible";
              })
            } else { //lockout account
+               
+            //log account lockout
+            var QueryLog = Parse.Object.extend("Log");
+            var qryLog = new QueryLog();
+
+            qryLog.set('type', "Account Lockout");
+            qryLog.set('username', usernameTemp);
+            qryLog.set('message', "Attempted login to locked account user[" + usernameTemp + 
+                        "resulting in failure and lockout extension.");
+
+            qryLog.save().then( () =>{
+        
+            }).catch(e => {
+                console.log(e);
+            });
+               
             document.getElementById("failPrompt").innerHTML = "You have made too many login attempts, please try again in 15 minutes.";
             document.getElementById("failPrompt").style.visibility="visible";
         }
