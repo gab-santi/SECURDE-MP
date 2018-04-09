@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import '../App.css';
 import { Grid, Row, Col, PageHeader, Button, FormGroup, FormControl, ControlLabel, ProgressBar} from 'react-bootstrap';
 import { Redirect } from 'react-router-dom'
+import { Validation } from '../Validation/Validation.js'
 
 var Parse = require('parse');
 var zxcvbn = require('zxcvbn');
@@ -60,16 +61,25 @@ class Signup extends Component{
     var Query = Parse.Object.extend(Parse.User);
     var qry = new Query();
 
-    qry.set("username",this.state.name);
-    qry.set("password",this.state.password);
-    qry.set("email",this.state.email);
+	if(Validation.validateTextInput(this.state.name) ||
+	  Validation.validateTextInput(this.state.password) ||
+	  Validation.validateTextInput(this.state.email)){
+	   console.log("Invalid Input"); 		 
+	   this.setState({name: '',password: '', email: ''});
+	}
+	else{
+	
+      qry.set("username",this.state.name);
+      qry.set("password",this.state.password);
+      qry.set("email",this.state.email);
 
-    qry.save().then(function(){
-      console.log("Signup Success");
-    }).catch(function(e){
-      console.log("Signup Failed");
-    })
-    this.setState({name: '',password: '', email: ''});
+      qry.save().then(function(){
+        console.log("Signup Success");
+      }).catch(function(e){
+        console.log("Signup Failed");
+      })
+      this.setState({name: '',password: '', email: ''});
+	  }
   }
 //2B3840
   render(){
