@@ -9,6 +9,7 @@ import Select from 'react-select';
 import 'react-select/dist/react-select.css';
 import Item from '../Shop/Item.js';
 import Pagination from 'react-js-pagination';
+import { Validation } from '../Validation/Validation.js'
 
 var Parse = require('parse');
 
@@ -111,21 +112,27 @@ class Shop extends Component{
     })
   }
   searchProducts(){
-    var Query = new Parse.Query("Product");
-    Query.matches("name",this.state.searchInput);
-    if(this.state.searchInput == '' || this.state.searchInput == null){
-      this.setState({displayProducts: [], allProducts: [], productCount: 0, searchempty: true});
-    }
-    else {
-      Query.find().then((list) => {
-        if(list.length == 0){
+    if (Validation.validateTextInputWhitelistSearch(this.state.searchInput)) {
+        console.log("Invalid Input")
+        this.setState({searchInput: ''})
+    } else {
+        var Query = new Parse.Query("Product");
+        Query.matches("name",this.state.searchInput);
+        if(this.state.searchInput == '' || this.state.searchInput == null){
           this.setState({displayProducts: [], allProducts: [], productCount: 0, searchempty: true});
         }
-        else{
-          this.setState({displayProducts: list, allProducts: list, productCount: list.length});
+        else {
+         Query.find().then((list) => {
+            if(list.length == 0){
+              this.setState({displayProducts: [], allProducts: [], productCount: 0, searchempty: true});
+            }
+            else{
+              this.setState({displayProducts: list, allProducts: list, productCount: list.length});
+            }
+          })
         }
-      })
     }
+
   }
   handleSearchChange(event){
     this.setState({searchInput: event.target.value});

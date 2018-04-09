@@ -3,6 +3,7 @@ import '../App.css';
 import { Grid, Row, Col, PageHeader, Button, FormGroup, FormControl, ControlLabel, ProgressBar} from 'react-bootstrap';
 import { withCookies, Cookies } from 'react-cookie';
 import { Switch, Route, Link , Redirect} from "react-router-dom";
+import { Validation } from '../Validation/Validation.js'
 
 var Parse = require('parse');
 const moment = require('moment');
@@ -47,25 +48,31 @@ class Login extends Component{
         if (list.length < 5) { //account is not locked out
 
             Parse.User.logIn(usernameTemp,passwordTemp).then(() => { //attempt login
-                console.log("Login Success");
-                this.setState({loggedIn: true});
-	            this.cookies.set('cart', []);
+                if (Validation.validateTextInput(usernameTemp) || Validation.validateTextInput(passwordTemp)) {
+                  console.log("Invalid Input");      
+                  this.setState({name: '',password: ''});
+                } else {
+                    console.log("Login Success");
+                    this.setState({loggedIn: true});
+                    this.cookies.set('cart', []);
 
-                //log login success
-                var QueryLog = Parse.Object.extend("Log");
-                var qryLog = new QueryLog();
+                    //log login success
+                    var QueryLog = Parse.Object.extend("Log");
+                    var qryLog = new QueryLog();
 
-                qryLog.set('type', "Login Success");
-                qryLog.set('username', usernameTemp);
-                qryLog.set('message', "user[" + usernameTemp + "] successfully logged in.");
+                    qryLog.set('type', "Login Success");
+                    qryLog.set('username', usernameTemp);
+                    qryLog.set('message', "user[" + usernameTemp + "] successfully logged in.");
 
-                qryLog.save().then( () =>{
+                    qryLog.save().then( () =>{
 
-                }).catch(e => {
-                    console.log(e);
-                });
-
+                    }).catch(e => {
+                        console.log(e);
+                    });
+                }
+                
              }).catch(function(e){
+
                  console.log("Login Failed");
 
                 //log login failure
@@ -86,8 +93,16 @@ class Login extends Component{
                     }
                 });
                 setTimeout(function() {
-                    qryLog.set('message', "Attempted login with username[" + usernameTemp +
+                    if (Validation.validateTextInputWhitelist(usernameTemp) || Validation.validateTextInputWhitelist(passwordTemp)) {
+                      qryLog.set('message', "Attempted invalid character login with username[" + usernameTemp +
                                "] and password[" + passwordTemp + "] resulting in failure.");
+                      document.getElementById("failPrompt").innerHTML = "Invalid Input, please try again.";
+                    } else {
+                      qryLog.set('message', "Attempted login with username[" + usernameTemp +
+                               "] and password[" + passwordTemp + "] resulting in failure.");
+                      document.getElementById("failPrompt").innerHTML = "Invalid Username or Password, please try again.";
+                    }
+                    
 
                     qryLog.save().then( () =>{
 
@@ -96,7 +111,6 @@ class Login extends Component{
                     });
                 }, 500);
 
-                document.getElementById("failPrompt").innerHTML = "Invalid Username or Password, please try again.";
                 document.getElementById("failPrompt").style.visibility="visible";
              })
            } else { //lockout account
