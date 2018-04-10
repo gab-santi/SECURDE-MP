@@ -42,6 +42,7 @@ class Login extends Component{
     var QueryCheck = new Parse.Query("Log");
     QueryCheck.limit(5);
     QueryCheck.equalTo("username", usernameTemp);
+    QueryCheck.equalTo("type", "Login Failure");
     QueryCheck.greaterThan("updatedAt", moment().subtract(15, 'minutes').toDate());
     QueryCheck.find().then((list) => {
         
