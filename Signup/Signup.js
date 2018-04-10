@@ -60,8 +60,14 @@ class Signup extends Component{
   handleSubmit(event){
     var Query = Parse.Object.extend(Parse.User);
     var qry = new Query();
-
-	if(Validation.validateTextInput(this.state.name) ||
+	
+	if(this.state.name.length == 0)
+		alert('Name is required');
+	else if(this.state.password.length == 0)
+		alert('Password is required');
+	else if(this.state.email.length == 0)
+		alert('Valid Email is required');
+	else if(Validation.validateTextInput(this.state.name) ||
 	  Validation.validateTextInput(this.state.password) ||
 	  Validation.validateTextInput(this.state.email)){
 	   console.log("Invalid Input"); 		 
@@ -102,21 +108,21 @@ class Signup extends Component{
               <ControlLabel>USERNAME</ControlLabel>
               <div style={inputBox1Style}>
                 <i class="fas fa-user" style={{"marginRight":"5px"}}></i>
-                <input type="text" value={this.state.name} onFocus={() => this.setState({unSelect:"#2B3840"})} onBlur={() => this.setState({unSelect:"#696969"})} onChange={this.handleNameChange} style={{"width":"90%", "backgroundColor":"#ffffff","fontSize":"12.5px"}}/>
+                <input type="text" value={this.state.name} onFocus={() => this.setState({unSelect:"#2B3840"})} onBlur={() => this.setState({unSelect:"#696969"})} onChange={this.handleNameChange} style={{"width":"90%", "backgroundColor":"#ffffff","fontSize":"12.5px"}} required/>
               </div>
             </FormGroup>
             <FormGroup>
               <ControlLabel>EMAIL</ControlLabel>
               <div style={inputBox3Style}>
                 <i class="fas fa-envelope" style={{"marginRight":"5px"}}></i>
-                <input type="email" value={this.state.email} onFocus={() => this.setState({emSelect:"#2B3840"})} onBlur={() => this.setState({emSelect:"#696969"})} onChange={this.handleEmailChange} style={{"width":"90%", "backgroundColor":"#ffffff","fontSize":"12.5px"}}/>
+                <input type="email" value={this.state.email} onFocus={() => this.setState({emSelect:"#2B3840"})} onBlur={() => this.setState({emSelect:"#696969"})} onChange={this.handleEmailChange} style={{"width":"90%", "backgroundColor":"#ffffff","fontSize":"12.5px"}} required/>
               </div>
             </FormGroup>
             <FormGroup>
               <ControlLabel>PASSWORD</ControlLabel>
               <div style={inputBox2Style}>
                 <i class="fas fa-key" style={{"marginRight":"5px"}}></i>
-                <input type="password" value={this.state.password} onFocus={() => this.setState({pwSelect:"#2B3840"})} onBlur={() => this.setState({pwSelect:"#696969"})} onChange={this.handlePasswordChange} style={{"width":"90%", "backgroundColor":"#ffffff","fontSize":"12.5px"}}/>
+                <input type="password" value={this.state.password} onFocus={() => this.setState({pwSelect:"#2B3840"})} onBlur={() => this.setState({pwSelect:"#696969"})} onChange={this.handlePasswordChange} style={{"width":"90%", "backgroundColor":"#ffffff","fontSize":"12.5px"}} required/>
               </div>
             </FormGroup>
             <ControlLabel style={{"color":"#494949"}}>PASSWORD STRENGTH: <div style={{"display":"inline-block","color":this.state.pwColor}}>{this.state.pwStrength}</div></ControlLabel>

@@ -47,8 +47,8 @@ class Login extends Component{
     QueryCheck.find().then((list) => {
         
         if (list.length < 5) { //account is not locked out
-
             Parse.User.logIn(usernameTemp,passwordTemp).then(() => { //attempt login
+				console.log("username length: " + usernameTemp.length);
                 if (Validation.validateTextInput(usernameTemp) || Validation.validateTextInput(passwordTemp)) {
                   console.log("Invalid Input");      
                   this.setState({name: '',password: ''});
@@ -94,7 +94,15 @@ class Login extends Component{
                     }
                 });
                 setTimeout(function() {
-                    if (Validation.validateTextInputWhitelist(usernameTemp) || Validation.validateTextInputWhitelist(passwordTemp)) {
+					if(usernameTemp.length == 0){
+				      qryLog.set('message', "Attempted login without username resulting in failure.");
+                      document.getElementById("failPrompt").innerHTML = "Username is required.";
+					}
+					else if(passwordTemp.length == 0){
+					  qryLog.set('message', "Attempted login without password resulting in failure.");
+                      document.getElementById("failPrompt").innerHTML = "Password is required.";
+					}
+                    else if (Validation.validateTextInputWhitelist(usernameTemp) || Validation.validateTextInputWhitelist(passwordTemp)) {
                       qryLog.set('message', "Attempted invalid character login with username[" + usernameTemp +
                                "] and password[" + passwordTemp + "] resulting in failure.");
                       document.getElementById("failPrompt").innerHTML = "Invalid Input, please try again.";
@@ -166,14 +174,14 @@ class Login extends Component{
               <ControlLabel>USERNAME</ControlLabel>
               <div style={inputBox1Style}>
                 <i class="fas fa-user" style={{"marginRight":"5px"}}></i>
-                <input type="text" value={this.state.name} onFocus={() => this.setState({unSelect:"#2B3840"})} onBlur={() => this.setState({unSelect:"#696969"})} onChange={this.handleNameChange} style={{"width":"90%", "backgroundColor":"#ffffff","fontSize":"12.5px"}}/>
+                <input type="text" value={this.state.name} onFocus={() => this.setState({unSelect:"#2B3840"})} onBlur={() => this.setState({unSelect:"#696969"})} onChange={this.handleNameChange} style={{"width":"90%", "backgroundColor":"#ffffff","fontSize":"12.5px"}} required/>
               </div>
             </FormGroup>
             <FormGroup>
               <ControlLabel>PASSWORD</ControlLabel>
               <div style={inputBox2Style}>
                 <i class="fas fa-key" style={{"marginRight":"5px"}}></i>
-                <input type="password" value={this.state.password} onFocus={() => this.setState({pwSelect:"#2B3840"})} onBlur={() => this.setState({pwSelect:"#696969"})} onChange={this.handlePasswordChange} style={{"width":"90%", "backgroundColor":"#ffffff","fontSize":"12.5px"}}/>
+                <input type="password" value={this.state.password} onFocus={() => this.setState({pwSelect:"#2B3840"})} onBlur={() => this.setState({pwSelect:"#696969"})} onChange={this.handlePasswordChange} style={{"width":"90%", "backgroundColor":"#ffffff","fontSize":"12.5px"}} required/>
               </div>
             </FormGroup>
             <Row>
